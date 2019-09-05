@@ -24,7 +24,7 @@ package com.star.permanent.algorithm.leetcode.sort;
 
 public class LC_1030 {
     public static void main(String[] args) {
-        allCellsDistOrder(1,2,0,0);
+        allCellsDistOrderOptimize(1,2,0,0);
     }
     /*
     * 曼哈顿距离升序，以 (r0,c0)为中心，正菱形经过的点为曼哈顿距离相同的点
@@ -42,6 +42,47 @@ public class LC_1030 {
                         rs[curr++] = pos;
                     }
                 }
+            }
+            ++r;
+        }
+        return rs;
+    }
+
+    public static int[][] allCellsDistOrderOptimize(int R, int C, int r0, int c0) {
+        int[][] rs = new int[R*C][2];
+        int r = 0;
+        int total = R * C;
+        int curr = 0;
+        while (curr < total) {
+            int d = r;
+            while (d >= 0) {
+                int left = c0 - d;
+                int right = c0 + d;
+                if(left >=0) {
+                    int top = r0-(r-d);
+                    int bottom = r0+(r-d);
+                    if(top >=0) {
+                        int [] pos = {r0-r+d,c0-d};
+                        rs[curr++] = pos;
+                    }
+                    if(top!=bottom && bottom <R) {
+                        int [] pos = {r0+r-d,c0-d};
+                        rs[curr++] = pos;
+                    }
+                }
+                if(left != right && right < C) {
+                    int top = r0-(r-d);
+                    int bottom = r0+(r-d);
+                    if(top >=0) {
+                        int [] pos = {r0-r+d,c0+d};
+                        rs[curr++] = pos;
+                    }
+                    if(top != bottom && bottom <R) {
+                        int [] pos = {r0+r-d,c0+d};
+                        rs[curr++] = pos;
+                    }
+                }
+                --d;
             }
             ++r;
         }
