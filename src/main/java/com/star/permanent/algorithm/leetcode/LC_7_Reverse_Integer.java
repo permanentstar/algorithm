@@ -17,7 +17,7 @@ package com.star.permanent.algorithm.leetcode;
     https://leetcode-cn.com/problems/reverse-integer
 * */
 
-public class LC_2_Reverse_Integer {
+public class LC_7_Reverse_Integer {
     public static void main(String[] args) {
         System.out.println(reverse(1563847412));
     }
