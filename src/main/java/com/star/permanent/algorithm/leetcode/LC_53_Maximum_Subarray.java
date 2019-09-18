@@ -26,13 +26,6 @@ public class LC_53_Maximum_Subarray {
     }
 
     /*
-    * 分治方法
-    * */
-    public static int divideConquer(int[] nums) {
-        return -1;
-    }
-
-    /*
     * 使用动态规划的解
     * 寻找合并特征: 连续加和经过成员indexX时，无论经过多少次，总是仅保留最大值即可
     * 针对pSum[indexX], 考察递推公式： pSum[indexX] = Max(pSum[indexX-1] + nums[indexX], nums[indexX])
@@ -49,6 +42,24 @@ public class LC_53_Maximum_Subarray {
         for (int o=0;o<len;++o) {
             if (pSum[o] > max) {
                 max = pSum[o];
+            }
+        }
+        return max;
+    }
+
+    /*
+    * 优化空间复杂度为O(1)
+    * */
+    public static int maxSubArrayOptimize(int[] nums) {
+        int len = nums.length;
+        int sum = nums[0];
+        int max = Integer.MIN_VALUE;
+        for(int i=1;i< len;++i) {
+            if (sum > 0) {  // if (sum+nums[i]>nums[i])
+                sum += nums[i];
+            } else sum = nums[i];
+            if (sum > max) {
+                max = sum;
             }
         }
         return max;
