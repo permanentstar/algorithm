@@ -1,5 +1,6 @@
 package com.star.permanent.algorithm.leetcode;
 /*
+    给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
     Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
     Note:
     The number of elements initialized in nums1 and nums2 are m and n respectively.

@@ -2,6 +2,10 @@ package com.star.permanent.algorithm.leetcode;
 
 //      数组的相对排序
 /*
+        给你两个数组，arr1 和 arr2，
+        arr2 中的元素各不相同
+        arr2 中的每个元素都出现在 arr1 中
+        对 arr1 中的元素进行排序，使 arr1 中项的相对顺序和 arr2 中的相对顺序相同。未在 arr2 中出现过的元素需要按照升序放在 arr1 的末尾。
         Given two arrays arr1 and arr2, the elements of arr2 are distinct, and all elements in arr2 are also in arr1.
         Sort the elements of arr1 such that the relative ordering of items in arr1 are the same as in arr2.  Elements that don't appear in arr2 should be placed at the end of arr1 in ascending order.
         Example 1:
