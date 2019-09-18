@@ -26,6 +26,7 @@ public class LC_121_Best_Time_To_Buy_And_Sell_Stock {
     }
 
     /*
+    * 暴力法
     * 对角矩阵 (y,x)  val = P[y]-P[x] 求最大值
     * O(n^2)
     * */
@@ -45,5 +46,30 @@ public class LC_121_Best_Time_To_Buy_And_Sell_Stock {
         }
         return max;
     }
+
+    /*
+    * 动态规划
+    * stat[i] = max(stat[i-1]+p[i]-p[i-1], p[i]-p[i-1])  及当前点的最大插值要么是上一个点最大插值(>0)增加Δ的结果，要么只等于Δ(上一个点最大差值<0)
+    * 时间复杂度O(n) 空间复杂度 O(1)
+    * */
+    public static int maxProfitDP(int[] prices) {
+        if(prices.length < 2) return 0;
+        int len = prices.length;
+        int pre = prices[1]-prices[0];
+        int max = Math.max(0, pre);
+        int tmp;
+        for(int i=2;i<len;++i) {
+            tmp = prices[i] - prices[i-1];
+            if (pre > 0) {
+                pre += tmp;
+            } else pre = tmp;
+            if (pre > max) {
+                max = pre;
+            }
+        }
+        return max;
+    }
+
+
 
 }
