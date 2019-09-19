@@ -23,12 +23,42 @@ package com.star.permanent.algorithm.leetcode;
     Explanation: In this case, no transaction is done, i.e. max profit = 0.
     https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii
 * */
-public class LC_121_Best_Time_To_Buy_And_Sell_Stock_II {
-
+public class LC_122_Best_Time_To_Buy_And_Sell_Stock_II {
+    static int[] p = {7,1,5,3,6,4};
+    static int[] p1 = {1,2,3,4,5};
+    static int[] p2 = {7,6,4,3,1};
     public static void main(String[] args) {
-
+        System.out.println(maxProfit(p1));
     }
+    /*
+    * 直观方法，分段求最大和，即找出每个最大单调增区间的max-min并求和
+    * */
     public static int maxProfit(int[] prices) {
-        return -1;
+        if (prices.length < 2) return 0;
+        int sum = 0;
+        int low = prices[1]>prices[0] ? prices[0]:Integer.MIN_VALUE;
+        for(int i=1;i<prices.length;++i) {
+            if (i == prices.length - 1) {
+                if (low != Integer.MIN_VALUE) {  // trade still open
+                    sum += prices[i] - low;
+                }
+            } else if (prices[i] <= prices[i-1] && prices[i]<prices[i+1]) {  // 极小值
+                low = prices[i];
+            } else if (prices[i]>prices[i-1] && prices[i]>=prices[i+1]) { // 极大值
+                sum += prices[i] - low;
+                low = Integer.MIN_VALUE;
+            }
+        }
+        return sum;
+    }
+
+    public static int maxProfit2(int[] prices) {
+        int sum = 0;
+        for (int i=1;i<prices.length;++i) {
+            if (prices[i] > prices[i-1]) {
+                sum += prices[i] - prices[i-1];
+            }
+        }
+        return sum;
     }
 }
