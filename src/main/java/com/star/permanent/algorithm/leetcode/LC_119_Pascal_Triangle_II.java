@@ -14,10 +14,71 @@ package com.star.permanent.algorithm.leetcode;
     https://leetcode-cn.com/problems/pascals-triangle-ii
 * */
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LC_119_Pascal_Triangle_II {
+    static int n = 4;
+
+    public static void main(String[] args) {
+        List<Integer> rs = getRowFormular(n);
+        for(int i=0;i<rs.size();++i) {
+            System.out.print(rs.get(i) + " ");
+        }
+    }
+
+    /*
+     * 1 0 0 0 0
+     * 1 1 0 0 0
+     * 1 2 1 0 0
+     * 1 3 3 1 0
+     * 1 4 6 4 1
+     *
+     * P[K][K]  <-  stat[i][j] = stat[i-1][j] + stat[i-1][j-1]
+     *           stat[0][0] = 1
+     *
+     *  折叠第一层K
+     *  stat[j] = stat[j] + stat[j-1]
+     *  stat[0] = 1
+     *
+     * */
     public static List<Integer> getRow(int rowIndex) {
-        return null;
+        List<Integer> lk = new ArrayList<>(rowIndex+1);
+        lk.add(1);
+        if (rowIndex == 0) return lk;
+        for(int i = 1;i<=rowIndex;++i) {
+            lk.add(0);
+            for(int j = i;j>0;--j) {
+                lk.set(j, lk.get(j) + lk.get(j-1));
+            }
+        }
+        return lk;
+    }
+
+    /*
+    * 杨辉三角有公式每层数值为 Cn0~Cnn, 因此 要求的就是Cr0~Crr 长度为 r+1
+    * 计算公式可以推导出 Cnk = Cn(k-1) * (n-k+1) / k
+    *
+    * */
+    public static List<Integer> getRowFormular(int rowIndex) {
+        List<Integer> lk = new ArrayList<>(rowIndex+1);
+        lk.add(1);
+        long pre = 1;
+        for (int i=1;i<=rowIndex;++i) {
+            long curr = pre * (rowIndex-i+1) / i;
+            lk.add((int)curr);
+            pre = curr;
+        }
+        return lk;
     }
 }
+
+
+
+
+
+
+
+
+
+
