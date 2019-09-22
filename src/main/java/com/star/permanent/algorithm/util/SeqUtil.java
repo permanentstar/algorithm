@@ -19,4 +19,15 @@ public class SeqUtil {
         }
         System.out.println(arr);
     }
+
+    private static void revertArray(int[] a, int s, int e) {
+        int tmp;
+        while (s<e) {
+            tmp = a[s];
+            a[s] = a[e];
+            a[e] = tmp;
+            ++s;
+            --e;
+        }
+    }
 }
