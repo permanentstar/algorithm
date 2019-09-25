@@ -20,25 +20,28 @@ public class LC_581_Shortest_Unsorted_Continuous_Subarray {
     static int[] nums2 = {3,2,1};
     static int[] nums3 = {1,3,2,2,2};
     static int[] nums4 = {2,2,4,3,6,9};
+    static int[] nums5 = {2,3,3,2,4};
     public static void main(String[] args) {
-        System.out.println(findUnsortedSubarrayDP(nums4));
+        System.out.println(findUnsortedSubarray(nums));
     }
     /*
-    * 问题描述： 将数组p分为三段， 第一段与第三段为升序 第二段为波动段其最小值大于等于第一段最后值，其最大值小于等于第三段起始值
+    * 问题描述： 将数组p分为三段， 第一段与第三段为升序 第二段为波动段其最小值大于第一段最后值，其最大值小于等于第三段起始值
+    * 推导：波动最小值不可能位于1、2段分界处，但波动最大值有可能出现在第2、3段交界处
+    * 注意几种特殊场景：
+    * 1. 波动最大值在开始连续出现
+    * 2. 波动最大值在结尾连续出现（没有第三段）
+    * 3. 波动最小值在结尾连续出现
     * */
 
 
     /*
-    * 方法一: 贪心算法
-    * 先找出所有问题点(p[n]<maxPre)，求出集合中min max 正序寻找单调递增中最后一个小于min的索引i(好点) 倒序找出单调递减中最后一个大于max的索引j(好点) 返回 (j-1)-(i+1)+1=j-i-1
-    * min不会出现在第一二段交界处  max不会出现在第二三段交界处
+    * 先找出所有问题点(p[n]<maxPre)，求出集合中min max 正序寻找单调递增中第一个大于min的索引i 倒序找出单调递减中第一个小于或等于max的索引j 返回 j-i+1
     * */
     public static int findUnsortedSubarray(int[] nums) {
+        if (nums.length < 2) return 0;
         int probMin = Integer.MAX_VALUE;
         int probMax = Integer.MIN_VALUE;
         int max = nums[0];
-        boolean asc = true;
-        boolean desc = true;
         for(int i = 1;i<nums.length;++i) {
             if (nums[i] < max) {  // problem point
                 if (nums[i] > probMax) {
@@ -47,50 +50,29 @@ public class LC_581_Shortest_Unsorted_Continuous_Subarray {
                 if (nums[i] < probMin) {
                     probMin = nums[i];
                 }
-                asc = false;
             } else {
                 max = nums[i];
-                desc = false;
             }
         }
-        if (asc) return 0;
-        if (desc) return nums.length;
-        if (probMin == nums[nums.length-1] && probMax == nums[0]) return nums.length;
+        if(probMin == Integer.MAX_VALUE || probMax == Integer.MIN_VALUE) {
+            return 0;  // 单调递增
+        }
         int first = 0;
-        for (int i = 1;i<nums.length-1;++i) {
-            if (nums[i] >= nums[i-1] && nums[i] <= probMin) {
+        for (int i = 0;i<nums.length;++i) {
+            if (nums[i] > probMin) {
                 first = i;
                 break;
             }
         }
         int last = nums.length-1;
-        for (int j = nums.length-1;j>=1;--j) {
-            if (nums[j] >= nums[j-1]  && nums[j] >= probMax) {
+        for (int j = nums.length-1;j>=0;--j) {
+            if (nums[j] <= probMax) {
                 last = j;
                 break;
             }
         }
-        return last - first - 1;
+        return last - first + 1;
     }
 
 
-    public static int findUnsortedSubarrayDP(int[] nums) {
-        if (nums.length == 1) return 0;
-        int preStat = 0;
-        int preEndIndex = 0;
-        int max = nums[0];
-        int probMax = Integer.MIN_VALUE;
-        for(int i = 1;i<nums.length;++i) {
-            if(nums[i] < max) {
-                if (probMax < nums[i]) {
-                    probMax = nums[i];
-                }
-                preStat += (i-preEndIndex);
-                preEndIndex = i;
-            } else {
-                max = nums[i];
-            }
-        }
-        return preStat;
-    }
 }
