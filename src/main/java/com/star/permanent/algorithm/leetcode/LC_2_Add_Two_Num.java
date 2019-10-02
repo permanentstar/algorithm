@@ -1,6 +1,7 @@
 package com.star.permanent.algorithm.leetcode;
 
-import java.util.List;
+import com.star.permanent.algorithm.util.ListNode;
+
 
 /*
     You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order
@@ -132,11 +133,4 @@ public class LC_2_Add_Two_Num {
         return false;
     }
 
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-        }
-    }
 }
