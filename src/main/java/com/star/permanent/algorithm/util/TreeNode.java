@@ -7,4 +7,12 @@ public class TreeNode {
     public TreeNode(int x) {
         val = x;
     }
+
+    public static TreeNode invert(TreeNode root) {
+        if (root == null) return null;
+        TreeNode tmp = invert(root.left);
+        root.left = invert(root.right);
+        root.right = tmp;
+        return root;
+    }
 }
