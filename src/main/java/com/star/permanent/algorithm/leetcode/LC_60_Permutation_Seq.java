@@ -26,44 +26,43 @@ import java.util.*;
 * */
 public class LC_60_Permutation_Seq {
     public static void main(String[] args) {
-        System.out.println(getPermutation(3,3));
+        System.out.println(getPermutation(4,4));
     }
 
     public static String getPermutation(int n, int k) {
-        Map<Integer,Integer> map = new HashMap<>(); // 预存阶乘 n! = rank[n-1]
-        int multi = 1;
+        if (n==1) return "1";
+        int currRank = 1;
+        LinkedList<Integer> remain = new LinkedList<>();
         for(int i=1;i<=n;++i) {
-            multi *= i;
-            map.put(i,multi);
+            if (i < n) {   // k 一定 <= n! 起始currRank 要置为 (n-1)!
+                currRank *= i;
+            }
+            remain.add(i);
         }
         int divid;
         int[] rs = new int[n];
         int i=0;
-        int j=n;
+        int j=n-1;
         for (;i<rs.length;++i) {
-            for(;j>0;--j) {
-                divid = k / map.get(j);
-                if (divid > 0) {
-                    if (divid % map.get(j) > 0) {
-                        ++divid;
-                    }
-                    rs[i] = divid;
-                    k  %= map.get(j);
-                    map.remove(j);
-                    --j;
-                    break;
+            divid = k / currRank;
+            if (divid > 0) {
+                int rest = k % currRank;
+                if (rest > 0) {
+                    ++divid;
                 }
+                rs[i] = remain.get(divid - 1);  // 第 divid 个group 索引为 divid - 1
+                k  = rest == 0 ? currRank : rest; // 如果整除 说明应该是前一个group的最后一个组合，此时将k置为该group最大值currRank(如 2!=2 进入下一次与1!=1做比较)
+                remain.remove(divid - 1);
+            } else { // rs 首位一定可以找到  之后如果往前一个rank找不到则说明目标行就在当前group的第一个子group内，直接赋值remain(0)
+                rs[i] = remain.get(0);
+                remain.remove(0);
             }
-            if (j == 0) {
-                break;
-            }
+            currRank /= j;
+            --j;
+            if (j == 0) break;
         }
-        if (i < rs.length) {
-            for(int l=0;l<n;++l) {
-                if (map.containsKey(l+1)) {
-                    rs[i++] = l+1;
-                }
-            }
+        while (!remain.isEmpty()) {
+            rs[++i] = remain.remove(0);
         }
         StringBuilder builder = new StringBuilder();
         for(int l=0;l<rs.length;++l) {
